@@ -85,12 +85,6 @@ int aes_decrypt(const unsigned char* key, const unsigned char* iv,
     EVP_CIPHER_CTX_free(ctx);
     return plaintext_len;
 }
-int generate_iv(unsigned char* iv) {
-    if (RAND_bytes(iv, 16) != 1) {
-        return 0;
-    }
-    return 1;
-}
 int main(){
     std::cout << "hello,world" << std::endl;
 //    crow::SimpleApp app;
@@ -98,8 +92,13 @@ int main(){
 //            return "ok";
 //        });
 //    app.port(18080).multithreaded().run();
-    unsigned char* c;
-    generate_iv(c);
-    std::cout << c;
+    const unsigned char* key = NULL,iv = NULL,encr = NULL,decr = NULL;
+    RAND_bytes(key, 32);
+    RAND_bytes(iv, 16);
+    std::string str;
+    std::cin >> str;
+    aes_encrypt(key,iv,str,str.length(),encr);
+    aes_decrypt(key, iv, encr, strlen(encr), decr);
+    std::cout << decr;
     return 0;
 }
