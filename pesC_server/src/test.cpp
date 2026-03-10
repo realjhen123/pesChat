@@ -98,7 +98,6 @@ int main(){
     std::string str;
     std::cin >> str;
     aes_encrypt(key,iv, reinterpret_cast<const unsigned char*>(str.c_str()), str.length(), encr);
-    aes_encrypt(key,iv,str.c_str(), str.length(), encr);
     aes_decrypt(key, iv, encr, sizeof(encr), decr);
     std::cout << decr;
     return 0;
