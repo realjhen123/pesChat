@@ -92,7 +92,7 @@ int main(){
 //            return "ok";
 //        });
 //    app.port(18080).multithreaded().run();
-    unsigned char* key = nullptr,iv = nullptr,encr = nullptr,decr = nullptr;
+    unsigned char* key = nullptr,*iv = nullptr,*encr = nullptr,*decr = nullptr;
     RAND_bytes(key, 32);
     RAND_bytes(iv, 16);
     std::string str;
