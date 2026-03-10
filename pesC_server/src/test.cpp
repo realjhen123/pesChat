@@ -18,6 +18,11 @@
 #include <iostream>
 #include "crow.h"
 int main(){
-    std::cout << "hello,world";
+    std::cout << "hello,world" << std::endl;
+    crow::SimpleApp app;
+    CROW_ROUTE(app,"/")([](){
+            return "ok";
+        });
+    app.port(18080).multithreaded().run();
     return 0;
 }
