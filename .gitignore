@@ -19,4 +19,4 @@ Makefile
 *.cmake
 !CMakeLists.txt
 _deps/  # CMake FetchContent 自动下载的依赖
-
+.vs/
