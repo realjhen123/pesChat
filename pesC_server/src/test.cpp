@@ -97,8 +97,8 @@ int main(){
     RAND_bytes(iv, 16);
     std::string str;
     std::cin >> str;
-    aes_encrypt(key,iv,str,str.length(),encr);
-    aes_decrypt(key, iv, encr, strlen(encr), decr);
+    aes_encrypt(key,iv,str.c_str(), str.length(), encr);
+    aes_decrypt(key, iv, encr, sizeof(encr), decr);
     std::cout << decr;
     return 0;
 }
