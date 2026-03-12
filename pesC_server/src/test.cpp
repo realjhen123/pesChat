@@ -17,12 +17,29 @@
 */
 #include <iostream>
 #include "crow.h"
+#include <openssl/evp.h>
+#include <openssl/rand.h>
+
 int main(){
     std::cout << "hello,world" << std::endl;
-    crow::SimpleApp app;
-    CROW_ROUTE(app,"/")([](){
-            return "ok";
-        });
-    app.port(18080).multithreaded().run();
+    EVP_PKEY_CTX* ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_ML_DSA,nullptr);
+    EVP_PKEY_keygen_init(ctx);
+    EVP_PKEY_CTX_set_ml_dsa_parameter_set(ctx, OSSL_ML_DSA_PARAM_SET_87);
+    EVP_PKEY* pkey = nullptr;
+    if (EVP_PKEY_keygen(ctx, &pkey) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        return -1;
+    };
+    EVP_PKEY_CTX_free(ctx);
+    FILE* fprivate = fopen("..\\pri.pem","wb");
+    unsigned char* password = nullptr;
+    std::cin >> password;
+    PEM_write_PrivateKey(fprivate,pkey, EVP_aes_256_cbc(),password,strlen(password),nullptr,nullptr);
+    fclose(fprivate);
+    
+    OPENSSL_cleanse((void*)password, strlen(password));
+    FILE* fpublic = fopen("..\\pub.pem", "wb");
+    PEM_write_PUBKEY(fpublic,pkey);
+    EVP_PKEY_free(pkey);
     return 0;
 }
